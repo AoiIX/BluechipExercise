@@ -1,7 +1,6 @@
 package com.ews.bluechip.exercise.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,14 @@ import androidx.fragment.app.Fragment;
 import com.ews.bluechip.exercise.MainActivity;
 import com.ews.bluechip.exercise.R;
 import com.ews.bluechip.exercise.weatherapi.domain.CallbackResponse;
-import com.ews.bluechip.exercise.weatherapi.model.WeatherResponseModel;
+import com.ews.bluechip.exercise.weatherapi.model.ListModel;
 import com.ews.bluechip.exercise.weatherapi.retrofit.WeatherApiCall;
 
 public class CityFragment extends Fragment {
     private EditText citiEditText;
     private Button button;
     private CallbackResponse responseCall;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_city, parent, false);
@@ -32,8 +32,7 @@ public class CityFragment extends Fragment {
 
         responseCall = new CallbackResponse() {
             @Override
-            public void callbackResponse(WeatherResponseModel response) {
-                Log.e("COSITAS", "DATOS =" + response.name);
+            public void callbackResponse(ListModel response) {
                 goToMainActivity(response);
             }
         };
@@ -56,7 +55,7 @@ public class CityFragment extends Fragment {
         }
     }
 
-    private void goToMainActivity(WeatherResponseModel weatherResponse){
+    private void goToMainActivity(ListModel weatherResponse){
         ((MainActivity)getActivity()).goToWeatherList(weatherResponse);
     }
 }

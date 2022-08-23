@@ -1,42 +1,42 @@
 package com.ews.bluechip.exercise.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.ews.bluechip.exercise.MainActivity;
 import com.ews.bluechip.exercise.R;
-import com.ews.bluechip.exercise.weatherapi.model.WeatherResponseModel;
-import com.ews.bluechip.exercise.weatherapi.recycleview.RecycleAdapter;
-
-import java.util.ArrayList;
+import com.ews.bluechip.exercise.weatherapi.model.ListModel;
 
 public class WeatherDetailsFragment extends Fragment {
-    private RecyclerView recyclerView;
-    private WeatherResponseModel weatherResponse;
+    private ListModel model;
+    private TextView tvTemperature;
+    private TextView tvRealFeel;
+    private TextView tvWeather;
+    private TextView tvWeatherDesc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_weather_list, parent, false);
+        return inflater.inflate(R.layout.fragment_weather_details, parent, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        weatherResponse = ((MainActivity) getActivity()).getWeatherResponse();
-        recyclerView = view.findViewById(R.id.recyclerview);
+        model = (ListModel) getArguments().getSerializable("model");
 
-        ArrayList<WeatherResponseModel> weatherList = new ArrayList<>();
-        weatherList.add(weatherResponse);
+        tvTemperature = view.findViewById(R.id.tvTemperature);
+        tvRealFeel = view.findViewById(R.id.tvRealFeel);
+        tvWeather = view.findViewById(R.id.tvWeather);
+        tvWeatherDesc = view.findViewById(R.id.tvWeatherDesc);
 
-        RecycleAdapter adapter = new RecycleAdapter(weatherList);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        tvTemperature.setText(String.valueOf(model.main.temp));
+        tvRealFeel.setText(String.valueOf(model.cod));
+        tvWeather.setText(model.weather.get(0).main);
+        tvWeatherDesc.setText(model.weather.get(0).description);
     }
 }

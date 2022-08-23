@@ -1,29 +1,21 @@
 package com.ews.bluechip.exercise;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ews.bluechip.exercise.fragment.CityFragment;
 import com.ews.bluechip.exercise.fragment.WeatherDetailsFragment;
-import com.ews.bluechip.exercise.weatherapi.model.WeatherResponseModel;
-import com.ews.bluechip.exercise.weatherapi.retrofit.WeatherService;
+import com.ews.bluechip.exercise.fragment.WeatherListFragment;
+import com.ews.bluechip.exercise.weatherapi.model.ListModel;
+import com.ews.bluechip.exercise.weatherapi.model.ListModel;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     FragmentTransaction ft;
-    WeatherResponseModel weatherResponse;
+    ListModel weatherResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,19 +27,30 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    public void goToWeatherList(WeatherResponseModel weatherResponse){
+    public void goToWeatherList(ListModel weatherResponse){
         setWeatherResponse(weatherResponse);
 
         ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.weatherFragment, new WeatherDetailsFragment());
+        ft.replace(R.id.weatherFragment, new WeatherListFragment());
         ft.commit();
     }
 
-    public void setWeatherResponse(WeatherResponseModel weatherResponse){
+    public void goToWeatherDetails(ListModel weatherResponseModel){
+        WeatherDetailsFragment fragment = new WeatherDetailsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("model", weatherResponseModel);
+        fragment.setArguments(bundle);
+
+        ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.weatherFragment, fragment);
+        ft.commit();
+    }
+
+    public void setWeatherResponse(ListModel weatherResponse){
         this.weatherResponse = weatherResponse;
     }
 
-    public WeatherResponseModel getWeatherResponse(){
+    public ListModel getWeatherResponse(){
         return weatherResponse;
     }
 }
